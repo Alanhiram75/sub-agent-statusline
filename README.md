@@ -30,14 +30,26 @@ Restart OpenCode after saving the file. The package is published as `opencode-su
 
 ### Native OpenCode V2
 
-OpenCode 2.x loads plugins from `cli.json` with the native V2 entrypoint:
+OpenCode 2.x loads a CLI plugin through a **directory entry**: the loader resolves `<directory>/tui`
+and never consults a package subpath. A package target such as `opencode-subagent-statusline/tui-v2`
+therefore cannot select the V2 export — it does not reach the exports map, and `npm-package-arg`
+parses it as a GitHub shorthand (`github:opencode-subagent-statusline/tui-v2`) before any module is
+read. Point `cli.json` at a directory instead:
 
 ```json
 {
   "$schema": "https://opencode.ai/v2/cli.json",
-  "plugins": ["opencode-subagent-statusline/tui-v2"]
+  "plugins": ["/absolute/path/to/opencode-subagent-statusline/v2"]
 }
 ```
+
+This repository carries that directory: `v2/tui.js` re-exports the built V2 bundle, so a local clone
+after `pnpm build` installs with the path above, and an npm install can point at
+`<...>/node_modules/opencode-subagent-statusline/v2`. The directory is resolved through
+`Bun.resolveSync`, so the single `tui.js` is enough — `@opentui/core`, `@opentui/solid`, `solid-js`
+and `@opencode/plugin/tui` are injected by the host at runtime, and no `node_modules` is needed
+beside the entry. Keep the directory outside the config `plugins/` directory, which is the
+server-plugin discovery path.
 
 The configuration usually lives at:
 

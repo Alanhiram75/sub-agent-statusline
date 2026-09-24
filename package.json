@@ -33,6 +33,7 @@
   },
   "files": [
     "dist",
+    "v2",
     "assets",
     "README.md"
   ],
