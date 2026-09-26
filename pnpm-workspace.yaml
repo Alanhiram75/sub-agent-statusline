@@ -1,4 +1,6 @@
 allowBuilds:
+  esbuild: true
+  msgpackr-extract: true
   protobufjs: true
 # pnpm settings (pnpm >= 10 reads configuration from this file).
 #
