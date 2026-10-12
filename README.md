@@ -191,11 +191,24 @@ Build the plugin:
 pnpm build
 ```
 
-Test a local build on OpenCode 2 by packing it and installing the tarball by package name:
+`opencode plugin add` accepts only npm registry or Git specifiers, so test a local build on
+OpenCode 2 with a directory entry. OpenCode resolves `<directory>/tui`, so create a directory with a
+`tui.js` that re-exports the build:
 
 ```sh
-pnpm pack
-opencode plugin add /absolute/path/to/opencode-subagent-statusline-2.0.0.tgz
+pnpm build
+mkdir -p /tmp/subagent-monitor-dev
+echo 'export { default } from "/absolute/path/to/sub-agent-statusline/dist/tui.js";' \
+  > /tmp/subagent-monitor-dev/tui.js
+```
+
+Then add the directory to `~/.config/opencode/cli.json`:
+
+```json
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "plugins": ["/tmp/subagent-monitor-dev"]
+}
 ```
 
 This project ships the native OpenCode 2 plugin from `src/v2/`, built with `tsup` and
