@@ -4,7 +4,7 @@
  * V2 session rows expose `time.{created,updated,idle}` as raw epoch millis
  * and an optional `outcome` (`succeeded | failed | interrupted`) recorded at
  * `time.idle`. This module derives the monitor status, the sort priority and
- * the candidate cap used by the `./tui-v2` entrypoint, ported from the V1
+ * the candidate cap used by the `./tui` entrypoint, ported from the V1
  * reconcile/render behavior.
  */
 

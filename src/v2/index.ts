@@ -1,7 +1,7 @@
 /**
- * OpenCode V2 entrypoint (`./tui-v2`).
+ * OpenCode V2 entrypoint (package root and `./tui`).
  *
- * Default-exports the `Plugin.define` definition from the V2 monitor so package
- * consumers can load the plugin from `opencode-subagent-statusline/tui-v2`.
+ * Default-exports only the `Plugin.define` definition from the V2 monitor;
+ * any extra named export would be rejected by the host plugin loader.
  */
 export { default } from "./tui.js";

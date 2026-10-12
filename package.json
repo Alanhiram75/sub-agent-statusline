@@ -1,6 +1,6 @@
 {
   "name": "opencode-subagent-statusline",
-  "version": "0.7.0",
+  "version": "2.0.0",
   "description": "OpenCode plugin that exposes subagent session statusline state",
   "type": "module",
   "repository": {
@@ -11,16 +11,16 @@
   "engines": {
     "node": ">=22.13"
   },
-  "main": "./dist/tui-v2.js",
-  "types": "./dist/tui-v2.d.ts",
+  "main": "./dist/tui.js",
+  "types": "./dist/tui.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/tui-v2.d.ts",
-      "import": "./dist/tui-v2.js"
+      "types": "./dist/tui.d.ts",
+      "import": "./dist/tui.js"
     },
     "./tui": {
-      "types": "./dist/tui-v2.d.ts",
-      "import": "./dist/tui-v2.js"
+      "types": "./dist/tui.d.ts",
+      "import": "./dist/tui.js"
     },
     "./runtime": {
       "types": "./dist/index.d.ts",
@@ -29,7 +29,6 @@
   },
   "files": [
     "dist",
-    "v2",
     "assets",
     "README.md"
   ],
@@ -56,16 +55,10 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@opencode-ai/plugin": ">=1.14.50 <2",
     "@opencode/plugin": ">=2.0.0 <3",
-    "@opentui/core": ">=0.4.0 <0.6",
-    "@opentui/solid": ">=0.4.0 <0.6",
+    "@opentui/core": ">=0.5.0 <0.7",
+    "@opentui/solid": ">=0.5.0 <0.7",
     "solid-js": ">=1.9.12 <2"
-  },
-  "peerDependenciesMeta": {
-    "@opencode/plugin": {
-      "optional": true
-    }
   },
   "devDependencies": {
     "@opencode-ai/plugin": "^1.15.11",

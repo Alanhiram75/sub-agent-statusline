@@ -11,77 +11,46 @@ See delegated work without leaving OpenCode. **Subagent Monitor** is an MIT-lice
 
 ## Install
 
-Pick the section that matches your OpenCode version. The 2.x line is published under the `next`
-npm tag; the 1.x line stays on `latest` until V2 is promoted. The package requires Node `>=22.13`.
+Plugin 2.x supports **OpenCode 2 only**. OpenCode 1 users must stay on the 1.x line.
+
+| OpenCode | Plugin entry | Config file |
+| --- | --- | --- |
+| 2.x | `opencode-subagent-statusline` | `~/.config/opencode/cli.json` |
+| 1.x | `opencode-subagent-statusline@1.3.1` (or `@legacy`) | `~/.config/opencode/tui.json` |
+
+The package requires Node `>=22.13`. Restart OpenCode after saving the configuration.
 
 ### OpenCode 2
 
-The intended configuration for the 2.x line once the prerelease is published — a plain package
-entry, no path:
+Add the package to the `plugins` array in `~/.config/opencode/cli.json`:
 
 ```json
 {
   "$schema": "https://opencode.ai/v2/cli.json",
-  "plugins": ["opencode-subagent-statusline@next"]
+  "plugins": ["opencode-subagent-statusline"]
 }
 ```
 
-The configuration usually lives at:
-
-```txt
-~/.config/opencode/cli.json
-```
-
-Restart OpenCode after saving the file. The entry resolves the package's `./tui` export, which in
-the 2.x line ships the native V2 plugin. Until the `@next` prerelease is published and the
-package-name installation flow is verified, use the directory entry below.
-
-**Directory entry (available today):** OpenCode 2.x loads a CLI plugin by resolving
-`<directory>/tui`; it never consults a package subpath. Point `cli.json` at a directory that
-carries the built V2 module:
-
-```json
-{
-  "$schema": "https://opencode.ai/v2/cli.json",
-  "plugins": ["/absolute/path/to/opencode-subagent-statusline/v2"]
-}
-```
-
-The repository ships `v2/tui.js`, which re-exports the built V2 bundle, so a local clone after
-`pnpm build` (or an npm install, via `<...>/node_modules/opencode-subagent-statusline/v2`) loads
-with the path above. The host injects `@opentui/core`, `@opentui/solid`, `solid-js` and
-`@opencode/plugin/tui` at runtime, so no `node_modules` is needed beside the entry. Keep the
-directory outside the config `plugins/` directory, which is the server-plugin discovery path.
+You can also run `opencode plugin add opencode-subagent-statusline`. In OpenCode 2, terminal plugins are configured in `cli.json`; entries in `tui.json` are not used.
 
 ### OpenCode 1
 
-Stay on the 1.x release line with an exact version pin:
+Plugin 2.x does not load on OpenCode 1. Pin the last 1.x release in `~/.config/opencode/tui.json`:
 
 ```json
 {
   "$schema": "https://opencode.ai/tui.json",
-  "plugin": ["opencode-subagent-statusline@1.3.0"]
+  "plugin": ["opencode-subagent-statusline@1.3.1"]
 }
 ```
 
-The configuration usually lives at:
+`opencode-subagent-statusline@legacy` points to the same 1.x line. An exact pin does not update automatically.
 
-```txt
-~/.config/opencode/tui.json
-```
+### Migrating from 1.x
 
-Restart OpenCode after saving the file. An exact pin requires a manual update to receive later
-1.x fixes. Once the `legacy` dist-tag is available, `opencode-subagent-statusline@legacy` can be
-used the same way.
+> **Warning:** an unversioned `opencode-subagent-statusline` entry follows the `latest` npm tag, which now installs 2.x. If you are still on OpenCode 1, change the entry to `opencode-subagent-statusline@1.3.1`, or the plugin will fail to load.
 
-### Migration for unpinned entries
-
-An unversioned `opencode-subagent-statusline` entry follows the `latest` tag. While V2 is
-published only under `next`, `latest` is still the 1.x line; once V2 is promoted to `latest`,
-unpinned setups on OpenCode 1 would receive the V2 plugin and stop working there. Pin an exact
-1.x version (or adopt the `legacy` tag when available) before that switch. See the OpenCode
-[V1 to V2 migration guide](https://opencode.ai/v2/docs/build/plugins/migrate-v1) for plugin
-migration details.
+When you upgrade to OpenCode 2, remove the entry from `tui.json` and add the unversioned package to `cli.json` as shown above. See the OpenCode [V1 to V2 migration guide](https://opencode.ai/v2/docs/build/plugins/migrate-v1) for details.
 
 ## Why Subagent Monitor?
 
@@ -108,7 +77,7 @@ When subagent activity is active, the plugin also adds a compact summary to the 
 
 ## Gentle AI integration
 
-[Gentle AI](https://github.com/Gentleman-Programming/gentle-ai) offers Subagent Monitor as an optional OpenCode community plugin. Select and install it through Gentle AI to add the selected plugin to OpenCode's `tui.json`, or install this package directly using the configuration above.
+[Gentle AI](https://github.com/Gentleman-Programming/gentle-ai) offers Subagent Monitor as an optional OpenCode community plugin. Select and install it through Gentle AI, or install this package directly using the configuration above for your OpenCode version.
 
 This integration is optional. Subagent Monitor remains an independently installable OpenCode plugin.
 
@@ -144,19 +113,19 @@ Click `Σ` in the sidebar aggregate row to toggle completed history with the mou
 When a child session is opened from the sidebar, returning with OpenCode `Up` (`session_parent`) moves keyboard focus to the parent prompt so you can type immediately.
 
 <details>
-<summary>Stable 1.x public contract</summary>
+<summary>Stable 2.x public contract</summary>
 
-For 1.x releases, the stable user-facing contract is:
+For 2.x releases, the stable user-facing contract is:
 
 - npm package name: `opencode-subagent-statusline`;
-- TUI plugin entrypoints: `opencode-subagent-statusline` and `opencode-subagent-statusline/tui`;
-- OpenCode `tui.json` plugin configuration;
+- OpenCode 2 TUI plugin entrypoints: `opencode-subagent-statusline` and `opencode-subagent-statusline/tui`;
+- OpenCode 2 `cli.json` plugin configuration;
 - visible sidebar and home/footer behavior;
 - command palette entry, `Alt+B`, and focused-list navigation;
 - local privacy and persistence behavior described in this README;
 - Node, peer dependency, and install contract declared in `package.json`.
 
-Experimental or internal surfaces may change in 1.x without a SemVer-major bump:
+Experimental or internal surfaces may change in 2.x without a SemVer-major bump:
 
 - `opencode-subagent-statusline/runtime`, intended for diagnostics and file-based runtime experiments;
 - diagnostic environment variables;
@@ -185,8 +154,7 @@ Check OpenCode logs:
 grep -n "subagent-statusline\|failed to load tui plugin" ~/.local/share/opencode/log/*.log
 ```
 
-Then restart OpenCode after changing the plugin configuration file (`tui.json` on OpenCode 1,
-`cli.json` on OpenCode 2).
+Then restart OpenCode after changing `cli.json`. If you are on OpenCode 1, make sure the entry is pinned to `opencode-subagent-statusline@1.3.1` in `tui.json`; 2.x does not load there.
 
 ### I installed a new version but OpenCode still behaves like the old one
 
@@ -208,8 +176,6 @@ The plugin persists a local JSON state file and `status.txt` snapshot under `XDG
 
 `OPENCODE_SUBAGENT_STATUSLINE_STATE` overrides the state file path. Treat that environment variable as trusted local configuration because the plugin will write status data to the configured path.
 
-For token/context backfill, the TUI reads recent local OpenCode SQLite/log data only from the user's OpenCode data directory. Very large log files are skipped to avoid blocking the TUI.
-
 <details>
 <summary>Development and testing</summary>
 
@@ -225,33 +191,22 @@ Build the plugin:
 pnpm build
 ```
 
-Test a local V1 build by pointing OpenCode 1 directly at `dist/tui.js`:
+Test a local build on OpenCode 2 by packing it and installing the tarball by package name:
 
-```json
-{
-  "$schema": "https://opencode.ai/tui.json",
-  "plugin": ["/absolute/path/to/sub-agent-statusline/dist/tui.js"]
-}
+```sh
+pnpm pack
+opencode plugin add /absolute/path/to/opencode-subagent-statusline-2.0.0.tgz
 ```
 
-Test a local V2 build by pointing OpenCode 2 at the repository's `v2/` directory:
-
-```json
-{
-  "$schema": "https://opencode.ai/v2/cli.json",
-  "plugins": ["/absolute/path/to/sub-agent-statusline/v2"]
-}
-```
-
-This project ships the OpenCode V1 TUI sidebar plugin from `src/tui.tsx` and the native V2 plugin
-from `src/v2/`. Both bundles are built with `tsup` and `esbuild-plugin-solid` in Solid `universal`
-mode for OpenTUI compatibility.
+This project ships the native OpenCode 2 plugin from `src/v2/`, built with `tsup` and
+`esbuild-plugin-solid` in Solid `universal` mode for OpenTUI compatibility. The OpenCode 1 plugin
+lives on the `v1` branch.
 
 Package entrypoints:
 
 ```txt
-opencode-subagent-statusline          -> TUI plugin (2.x line: native V2 entry)
-opencode-subagent-statusline/tui      -> TUI plugin (same V2 entry)
+opencode-subagent-statusline          -> OpenCode 2 TUI plugin
+opencode-subagent-statusline/tui      -> OpenCode 2 TUI plugin (same entry)
 opencode-subagent-statusline/runtime  -> experimental/diagnostic runtime mode
 ```
 
