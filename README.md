@@ -9,9 +9,6 @@ See delegated work without leaving OpenCode. **Subagent Monitor** is an MIT-lice
 [![GitHub stars](https://img.shields.io/github/stars/Joaquinvesapa/sub-agent-statusline?style=flat-square)](https://github.com/Joaquinvesapa/sub-agent-statusline)
 [![license](https://img.shields.io/github/license/Joaquinvesapa/sub-agent-statusline?style=flat-square)](LICENSE)
 
-> [!IMPORTANT]
-> **OpenCode 2 support is on the way.** Plugin 2.0.0 (OpenCode 2 only) is ready and tested in [#99](https://github.com/Joaquinvesapa/sub-agent-statusline/pull/99), and 1.3.1 will be published under the `legacy` tag for OpenCode 1. Publication is delayed a few days because the maintainer's npm account is temporarily suspended (about 72 hours). Until then, `latest` remains 1.3.0, which works only on OpenCode 1.
-
 ## Install
 
 Plugin 2.x supports **OpenCode 2 only**. OpenCode 1 users must stay on the 1.x line.
